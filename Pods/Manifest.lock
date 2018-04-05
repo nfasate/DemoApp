@@ -1,0 +1,15 @@
+PODS:
+  - FileBrowser (1.0.0)
+  - IQKeyboardManagerSwift (5.0.8)
+
+DEPENDENCIES:
+  - FileBrowser (~> 1.0)
+  - IQKeyboardManagerSwift
+
+SPEC CHECKSUMS:
+  FileBrowser: 2ca91ff61c9ea09665eb3b8f9e64a7a77e66a0bf
+  IQKeyboardManagerSwift: 2e7dc7f98c111458c1ea2b373f893e8cf95e2b97
+
+PODFILE CHECKSUM: 85c3898c28fb7d147929c01d9d434a4b25b1c200
+
+COCOAPODS: 1.4.0
