@@ -8,8 +8,15 @@
 
 import UIKit
 
+protocol OTPViewControllerDelegate: class {
+    func processComplete()
+}
+
+var processCompleted = false
+
 class OTPViewController: UIViewController {
 
+    @IBOutlet var lblInfo: UILabel!
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var txtOTP1: UITextField!
     @IBOutlet var txtOTP2: UITextField!
@@ -26,19 +33,22 @@ class OTPViewController: UIViewController {
     var seconds = 60
     var mobileNumber: String?
     
+    weak var delegate: OTPViewControllerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         setRoundedImageView()
-        
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        
         btnResendOTP.isEnabled = false
         initiateTimer()
         setGradientBackground()
-        setShadowToButton()
+        txtOTP1.becomeFirstResponder()
     }
     
     override func didReceiveMemoryWarning() {
@@ -61,19 +71,16 @@ class OTPViewController: UIViewController {
         txtOTP4.layer.borderWidth = 2
         txtOTP4.layer.borderColor = UIColor.gray.cgColor
         
-        txtOTP1.becomeFirstResponder()
+        lblInfo.text = "We have sent an OTP on customer's registered  number \(mobileNumber ?? "")"
         
-    }
-    
-    func setShadowToButton() {
-        btnSubmit.layer.shadowColor = UIColor.black.cgColor
-        btnSubmit.layer.shadowOffset = CGSize(width: 0, height: 2.0)
-        btnSubmit.layer.shadowOpacity = 0.6
+        let image = UIImage(named: "phone-hand-one-color")!.withRenderingMode(.alwaysTemplate)
+        imageView.image = image
+        imageView.tintColor = UIColor.white
     }
     
     func setGradientBackground() {
         let colorTop = UIColor(red: 80/255.0, green: 184/255.0, blue: 146/255.0, alpha: 1.0).cgColor
-        let colorBottom = UIColor(red: 97/255.0, green: 202/255.0, blue: 146/255.0, alpha: 1.0).cgColor
+        let colorBottom = UIColor(red: 2/255.0, green: 142/255.0, blue: 119/255.0, alpha: 1.0).cgColor
         
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [ colorTop, colorBottom]
@@ -135,20 +142,17 @@ class OTPViewController: UIViewController {
     }
     
     func popToHomeScreen() {
-        
-        self.navigationController?.popToViewController(<#T##viewController: UIViewController##UIViewController#>, animated: <#T##Bool#>)
+        self.dismiss(animated: true) {
+            
+        }
     }
     
-//    func presentLetsBeginScreen() {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let letsBeginController = storyboard.instantiateViewController(withIdentifier: "LetsBeginViewController") as! LetsBeginViewController
-//        letsBeginController.isAfterReg = false
-//        letsBeginController.modalPresentationStyle = .overCurrentContext
-//        present(letsBeginController, animated: true, completion: nil)
-//    }
-    
     @IBAction func submitOTPBtnTapped(_ sender: RoundButton) {
-        //presentLetsBeginScreen()
+        timer?.invalidate()
+        //delegate?.processComplete()
+        processCompleted = true
+        popToHomeScreen()
+        
     }
     
     @IBAction func resendOTPBtnTapped(_ sender: UIButton) {
@@ -156,6 +160,12 @@ class OTPViewController: UIViewController {
         btnResendOTP.isEnabled = false
         initiateTimer()
     }
+    
+    @IBAction func closeController(_ sender: UIButton) {
+        timer?.invalidate()
+        self.dismiss(animated: true, completion: nil)
+    }
+    
 }
 
 extension OTPViewController: UITextFieldDelegate {

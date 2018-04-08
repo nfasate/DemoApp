@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Meraki Vendor</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -59,6 +61,13 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>clanPro-Thin.ttf</string>
+		<string>ClanPro-Bold.otf</string>
+		<string>ClanPro-News.otf</string>
+		<string>ClanPro-Book.otf</string>
+	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -84,12 +93,5 @@
 	</array>
 	<key>UISupportsDocumentBrowser</key>
 	<true/>
-    <key>UIAppFonts</key>
-    <array>
-        <string>clanPro-Thin.ttf</string>
-        <string>ClanPro-Bold.otf</string>
-        <string>ClanPro-News.otf</string>
-        <string>ClanPro-Book.otf</string>
-    </array>
 </dict>
 </plist>

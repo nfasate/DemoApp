@@ -22,18 +22,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         self.title = "My Product"
-        //searchBar.placeholder = "Your placeholder"
-        //let leftNavBarButton = UIBarButtonItem(customView:searchBar)
-        //self.navigationItem.titleView = searchBar
-        
-        //custom.tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "tab_icon_normal"), selectedImage: UIImage(named: "tab_icon_seelcted"))
-        
-//        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.gray, NSAttributedStringKey.font: UIFont(name: "Georgia-Bold", size: 15)!], for:.normal)
-//        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont(name: "Georgia-Bold", size: 15)!], for:.selected)
-//
-//        UITabBar.appearance().tintColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1.0)
-        
-        
+                
         if let patternImage = UIImage(named: "Pattern") {
             view.backgroundColor = UIColor(patternImage: patternImage)
         }
@@ -41,7 +30,7 @@ class HomeViewController: UIViewController {
         if let layout = collectionView?.collectionViewLayout as? PinterestLayout {
             layout.delegate = self
         }
-        collectionView!.backgroundColor = UIColor.clear
+        //collectionView!.backgroundColor = UIColor.clear
         collectionView!.contentInset = UIEdgeInsets(top: 23, left: 5, bottom: 10, right: 5)
         
         collectionView?.translatesAutoresizingMaskIntoConstraints = false
@@ -84,7 +73,7 @@ class HomeViewController: UIViewController {
      */
     func createAddProductBtn() -> UIBarButtonItem
     {
-        let btnImage = #imageLiteral(resourceName: "addProduct")
+        let btnImage = #imageLiteral(resourceName: "download")
         let imageButton : UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
         imageButton.setBackgroundImage(btnImage, for: UIControlState())
         imageButton.addTarget(self, action: #selector(showProductListScreen(_:)), for: .touchUpInside)
@@ -130,24 +119,19 @@ class HomeViewController: UIViewController {
     }
     
     @objc func showProductListScreen(_ sender: AnyObject) {
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let productList = storyboard.instantiateViewController(withIdentifier: "ProductListViewController") as! ProductListViewController
+//        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+//        self.navigationController?.pushViewController(productList, animated: true)
+        
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func showPurchaseOrderScreen(indexItem: Int) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let productList = storyboard.instantiateViewController(withIdentifier: "ProductListViewController") as! ProductListViewController
-        self.navigationController?.pushViewController(productList, animated: true)
-    }
-    
-    func presentProductInfoScreen(indexItem: Int) {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let productInfo = storyboard.instantiateViewController(withIdentifier: "ProductInfoViewController") as! ProductInfoViewController
-//        let photo = photos[indexItem]
-//        productInfo.title = photo.caption
-//        self.navigationController?.pushViewController(productInfo, animated: true)
-    }
-    
-    func presentWebView() {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let webViewController = storyboard.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
-//        webViewController.title = "Samsung"
-//        self.navigationController?.pushViewController(webViewController, animated: true)
+        let payController = storyboard.instantiateViewController(withIdentifier: "payNavigationController") as! UINavigationController
+        ctarget = self
+        self.present(payController, animated: true, completion: nil)
     }
 }
 
@@ -165,10 +149,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
+        showPurchaseOrderScreen(indexItem: indexPath.item)
         if photos[indexPath.item].caption == "Samsung" {
-            presentWebView()
+            //presentWebView()
         }else {
-            presentProductInfoScreen(indexItem: indexPath.item)
+            //presentProductInfoScreen(indexItem: indexPath.item)
         }
     }
 }

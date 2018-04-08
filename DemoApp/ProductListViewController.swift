@@ -21,17 +21,6 @@ class ProductListViewController: UIViewController {
         super.viewDidLoad()
         
         self.title = "Product List"
-        //searchBar.placeholder = "Your placeholder"
-        //let leftNavBarButton = UIBarButtonItem(customView:searchBar)
-        //self.navigationItem.titleView = searchBar
-        
-        //custom.tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "tab_icon_normal"), selectedImage: UIImage(named: "tab_icon_seelcted"))
-        
-        //        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.gray, NSAttributedStringKey.font: UIFont(name: "Georgia-Bold", size: 15)!], for:.normal)
-        //        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont(name: "Georgia-Bold", size: 15)!], for:.selected)
-        //
-        //        UITabBar.appearance().tintColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1.0)
-        
         
         if let patternImage = UIImage(named: "Pattern") {
             view.backgroundColor = UIColor(patternImage: patternImage)
@@ -51,6 +40,11 @@ class ProductListViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        if processCompleted == true {
+            processCompleted = false
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -115,23 +109,11 @@ class ProductListViewController: UIViewController {
         showSearchBar()
     }
     
-    @objc func showProductListScreen(_ sender: AnyObject) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let productList = storyboard.instantiateViewController(withIdentifier: "ProductListViewController") as! ProductListViewController
-        self.navigationController?.pushViewController(productList, animated: true)
-    }
-    
     func showPurchaseOrderScreen(indexItem: Int) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let payController = storyboard.instantiateViewController(withIdentifier: "payNavigationController") as! UINavigationController
+        ctarget = self
         self.present(payController, animated: true, completion: nil)
-    }
-    
-    func presentWebView() {
-        //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        //        let webViewController = storyboard.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
-        //        webViewController.title = "Samsung"
-        //        self.navigationController?.pushViewController(webViewController, animated: true)
     }
 }
 
@@ -178,5 +160,11 @@ extension ProductListViewController: PinterestLayoutDelegate {
 extension ProductListViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         hideSearchBar()
+    }
+}
+
+extension ProductListViewController: OTPViewControllerDelegate {
+    func processComplete() {
+        
     }
 }

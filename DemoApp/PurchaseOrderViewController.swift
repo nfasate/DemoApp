@@ -8,20 +8,22 @@
 
 import UIKit
 
+var ctarget: UIViewController?
+
 class PurchaseOrderViewController: UIViewController {
 
-    @IBOutlet var txtPurchaseDate: UITextField!
-    @IBOutlet var txtVendorName: UITextField!
-    @IBOutlet var txtPrice: UITextField!
-    @IBOutlet var txtUnit: UITextField!
-    @IBOutlet var txtQuantity: UITextField!
+    @IBOutlet var txtPurchaseDate: HoshiTextField!
+    @IBOutlet var txtVendorName: HoshiTextField!
+    @IBOutlet var txtPrice: HoshiTextField!
+    @IBOutlet var txtUnit: HoshiTextField!
+    @IBOutlet var txtQuantity: HoshiTextField!
     @IBOutlet var btnPay: UIButton!
     @IBOutlet var viewDatePicker: UIView!
     @IBOutlet var datePicker: UIDatePicker!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.title = "Purchase order"
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -56,11 +58,15 @@ class PurchaseOrderViewController: UIViewController {
     func showVerifyCustomerScreen() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let verifyController = storyboard.instantiateViewController(withIdentifier: "VerifyCustomerViewController") as! VerifyCustomerViewController
-        present(verifyController, animated: true, completion: nil)
+        ctarget?.present(verifyController, animated: true, completion: nil)
     }
     
     @IBAction func payBtnTpped(_ sender: UIButton) {
-        showVerifyCustomerScreen()
+        
+        self.dismiss(animated: true) {
+            self.showVerifyCustomerScreen()
+        }
+        
     }
     
     @IBAction func showDatePicker(_ sender: UIButton) {
@@ -71,10 +77,15 @@ class PurchaseOrderViewController: UIViewController {
     @IBAction func datePickerDoneBtnTapped(_ sender: UIButton) {
         hideDatePickerView()
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = DateFormatter.Style.short
+        //dateFormatter.dateStyle = DateFormatter.Style.short
+        dateFormatter.dateFormat = "dd/MM/yyyy"
         
         let strDate = dateFormatter.string(from: datePicker.date)
         txtPurchaseDate.text = strDate
+    }
+    
+    @IBAction func closeController(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func datePickerCancelBtnTapped(_ sender: UIButton) {

@@ -13,9 +13,9 @@ class VerifyCustomerViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var cardBaseView: UIView!
     @IBOutlet var cardTextField: HoshiTextField!
     @IBOutlet var mobNumberTextField: HoshiTextField!
-    
     @IBOutlet var cardView: UIView!
     @IBOutlet var cardNumberLabel: UILabel!
+    @IBOutlet var cardImageView: UIImageView!
     
     private var previousTextFieldContent: String?
     private var previousSelection: UITextRange?
@@ -35,6 +35,9 @@ class VerifyCustomerViewController: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setCardBackground()
+        let image = UIImage(named: "card")!.withRenderingMode(.alwaysTemplate)
+        cardImageView.image = image
+        cardImageView.tintColor = UIColor.white
     }
 
     func setBorderToCardBaseView() {
@@ -51,11 +54,9 @@ class VerifyCustomerViewController: UIViewController, UITextFieldDelegate {
     }
     
     func setGradientBackground() {
-//        let colorTop =  UIColor(red: 55/255.0, green: 125/255.0, blue: 160/255.0, alpha: 1.0).cgColor
-//        let colorBottom = UIColor(red: 80/255.0, green: 177/255.0, blue: 186/255.0, alpha: 1.0).cgColor
         
         let colorTop = UIColor(red: 80/255.0, green: 184/255.0, blue: 146/255.0, alpha: 1.0).cgColor
-        let colorBottom = UIColor(red: 97/255.0, green: 202/255.0, blue: 146/255.0, alpha: 1.0).cgColor
+        let colorBottom = UIColor(red: 2/255.0, green: 142/255.0, blue: 119/255.0, alpha: 1.0).cgColor
         
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [ colorTop, colorBottom]
@@ -229,14 +230,21 @@ class VerifyCustomerViewController: UIViewController, UITextFieldDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let otpController = storyboard.instantiateViewController(withIdentifier: "OTPViewController") as! OTPViewController
         otpController.mobileNumber = mobNumberTextField.text!
-        self.present(otpController, animated: true, completion: nil)
+        ctarget?.present(otpController, animated: true, completion: nil)
     }
     
     @IBAction func generateOTPBtnTapped(_ sender: RoundButton) {
         if validateFields() == true {
-            presentOTPViewController()
+            self.dismiss(animated: true, completion: {
+                self.presentOTPViewController()
+            })
         }
     }
+    
+    @IBAction func closeController(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     
     @IBAction func skipBtnTapped(_ sender: RoundButton) {
         presentHomeScreen()

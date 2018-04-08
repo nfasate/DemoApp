@@ -10,13 +10,13 @@ import UIKit
 import QuartzCore
 import FileBrowser
 
-class RegisterViewController: UIViewController, UIDocumentPickerDelegate, UIDocumentBrowserViewControllerDelegate {
-    @IBOutlet var txtVendorName: UITextField!
-    @IBOutlet var txtPinCode: UITextField!
-    @IBOutlet var txtEmail: UITextField!
-    @IBOutlet var lblFileName: UILabel!
-    @IBOutlet var txtDealsIn: UITextField!
-    @IBOutlet var txtPassword: UITextField!
+class RegisterViewController: UIViewController, UIDocumentPickerDelegate {
+    @IBOutlet var txtVendorName: HoshiTextField!
+    @IBOutlet var txtPinCode: HoshiTextField!
+    @IBOutlet var txtEmail: HoshiTextField!
+    @IBOutlet var txtFileName: HoshiTextField!
+    @IBOutlet var txtDealsIn: HoshiTextField!
+    @IBOutlet var txtPassword: HoshiTextField!
     @IBOutlet var btnSignUp: UIButton!
     
     var browseFileName = ""
@@ -29,8 +29,6 @@ class RegisterViewController: UIViewController, UIDocumentPickerDelegate, UIDocu
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         btnSignUp.applyGradient(withColours: [#colorLiteral(red: 0.06700000167, green: 0.4819999933, blue: 0.5730000138, alpha: 1), #colorLiteral(red: 0.0390000008, green: 0.3140000105, blue: 0.3689999878, alpha: 1)], gradientOrientation: .horizontal)
-        lblFileName.layer.cornerRadius = 5
-        lblFileName.clipsToBounds = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,6 +41,19 @@ class RegisterViewController: UIViewController, UIDocumentPickerDelegate, UIDocu
         present(homeController, animated: true, completion: nil)
     }
     
+    func showDocumentBrowser() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if #available(iOS 11.0, *) {
+            let docController = storyboard.instantiateViewController(withIdentifier: "DocumentBrowserViewController") as! DocumentBrowserViewController
+            docController.cDelegate = self
+            present(docController, animated: true, completion: nil)
+        } else {
+            // Fallback on earlier versions
+        }
+        
+
+    }
+    
     @IBAction func signUpBtnTapped(_ sender: UIButton) {
         showHomeScreen()
     }
@@ -51,10 +62,7 @@ class RegisterViewController: UIViewController, UIDocumentPickerDelegate, UIDocu
 //        let fileBrowser = FileBrowser()
 //        present(fileBrowser, animated: true, completion: nil)
         if #available(iOS 11.0, *) {
-            let browser = UIDocumentBrowserViewController(forOpeningFilesWithContentTypes: ["public.item"])
-            browser.allowsPickingMultipleItems = false
-            browser.delegate = self
-            present(browser, animated: true, completion: nil)
+            showDocumentBrowser()
         } else {
             // Fallback on earlier versions
             let fileBrowser = FileBrowser()
@@ -102,35 +110,47 @@ class RegisterViewController: UIViewController, UIDocumentPickerDelegate, UIDocu
     }
     
     
-    @available(iOS 11.0, *)
-    func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentURLs documentURLs: [URL]) {
-        print(documentURLs[0].absoluteString)
-        browseFileName = documentURLs[0].absoluteString
-        controller.dismiss(animated: true, completion: nil)
-    }
     
-    @available(iOS 11.0, *)
-    func documentBrowser(_ controller: UIDocumentBrowserViewController, willPresent activityViewController: UIActivityViewController) {
-        
-    }
-    
-    @available(iOS 11.0, *)
-    func documentBrowser(_ controller: UIDocumentBrowserViewController, failedToImportDocumentAt documentURL: URL, error: Error?) {
-        
-    }
-    
-//    @available(iOS 11.0, *)
-//    func documentBrowser(_ controller: UIDocumentBrowserViewController, applicationActivitiesForDocumentURLs documentURLs: [URL]) -> [UIActivity] {
-//
-//    }
-    
-    @available(iOS 11.0, *)
-    func documentBrowser(_ controller: UIDocumentBrowserViewController, didImportDocumentAt sourceURL: URL, toDestinationURL destinationURL: URL) {
-        
-    }
-    
-    @available(iOS 11.0, *)
-    func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
-        
+}
+
+extension RegisterViewController: DocumentBrowserViewControllerDelegate {
+    func didPickDocument(at documentURL: URL) {
+        txtFileName.text = documentURL.lastPathComponent
     }
 }
+
+/*
+ 
+ @available(iOS 11.0, *)
+ func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentURLs documentURLs: [URL]) {
+ print(documentURLs[0].absoluteString)
+ browseFileName = documentURLs[0].absoluteString
+ controller.dismiss(animated: true, completion: nil)
+ }
+ 
+ @available(iOS 11.0, *)
+ func documentBrowser(_ controller: UIDocumentBrowserViewController, willPresent activityViewController: UIActivityViewController) {
+ 
+ }
+ 
+ @available(iOS 11.0, *)
+ func documentBrowser(_ controller: UIDocumentBrowserViewController, failedToImportDocumentAt documentURL: URL, error: Error?) {
+ 
+ }
+ 
+ //    @available(iOS 11.0, *)
+ //    func documentBrowser(_ controller: UIDocumentBrowserViewController, applicationActivitiesForDocumentURLs documentURLs: [URL]) -> [UIActivity] {
+ //
+ //    }
+ 
+ @available(iOS 11.0, *)
+ func documentBrowser(_ controller: UIDocumentBrowserViewController, didImportDocumentAt sourceURL: URL, toDestinationURL destinationURL: URL) {
+ 
+ }
+ 
+ @available(iOS 11.0, *)
+ func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
+ 
+ }
+ 
+ */

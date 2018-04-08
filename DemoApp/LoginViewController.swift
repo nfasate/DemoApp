@@ -10,8 +10,8 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
-    @IBOutlet var txtEmail: UITextField!
-    @IBOutlet var txtPassword: UITextField!
+    @IBOutlet var txtEmail: HoshiTextField!
+    @IBOutlet var txtPassword: HoshiTextField!
     @IBOutlet var btnSignIn: UIButton!
     
     override func viewDidLoad() {
